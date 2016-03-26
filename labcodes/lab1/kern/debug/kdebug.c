@@ -307,13 +307,13 @@ print_stackframe(void) {
       eip = read_eip();
       ebp = read_ebp();
       for(i=0;i<STACKFRAME_DEPTH;i++){
-          cprintf("ebp:0x%08x eip:0x%08x args:", &ebp,&eip);
+          cprintf("ebp:0x%08x eip:0x%08x args:", ebp,eip);
           arg = (uint32_t*)(ebp + 8);
           for(j=0;j<5;j++){
               cprintf("0x%08x ",(arg+j));
           }
           cprintf("\n");
-          print_debuginfo(eip - 4);
+          print_debuginfo(eip - 1);
           eip = *((uint32_t *)(ebp + 4));
           ebp = *((uint32_t *)(ebp));
       }

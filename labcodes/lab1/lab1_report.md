@@ -87,4 +87,63 @@
 	于是我们需要手动的enable它。
 	
 	Enable的方法是将0x6F通过outb写到端口0x60
+####2：如何初始化GDT表
+	lgdt gdtdesc
+####3:如何使能和进入保护模式
+	将CR0寄存器的CR0_PE置为1
+##练习4：分析bootloader加载ELF格式的OS的过程
+####练习4.1：bootloader如何读取硬盘扇区的
+	用readsect函数读取磁盘扇区。
+	readsect函数调用了waitdisk、outb、insl这三个基本磁盘操作。
+####练习4.2：bootloader是如何加载ELF格式的OS
+	首先先通过ELF的Header来判断，文件是否是一个正确的合法的文件；
+	然后根据Header中的其他存储的信息来读取OS
+	Header中存储的信息包括
+	struct elfhdr {
+		uint32_t e_magic;     // must equal ELF_MAGIC
+		uint8_t e_elf[12];
+		uint16_t e_type;      // 1=relocatable, 2=executable, 3=shared object, 4=core image
+		uint16_t e_machine;   // 3=x86, 4=68K, etc.
+		uint32_t e_version;   // file version, always 1
+		uint32_t e_entry;     // entry point if executable
+		uint32_t e_phoff;     // file position of program header or 0
+		uint32_t e_shoff;     // file position of section header or 0
+		uint32_t e_flags;     // architecture-specific flags, usually 0
+		uint16_t e_ehsize;    // size of this elf header
+		uint16_t e_phentsize; // size of an entry in program header
+		uint16_t e_phnum;     // number of entries in program header or 0
+		uint16_t e_shentsize; // size of an entry in section header
+		uint16_t e_shnum;     // number of entries in section header or 0
+		uint16_t e_shstrndx;  // section number that contains section name strings
+	};
+##练习5：实现函数调用堆栈跟踪函数
+####练习5.1：看看输出是否与上述显示大致一致，并解释最后一行各个数值的含义
+	结果是：
+	ebp:0x00007b38 eip:0x00100a1c args:0x00007b40 0x00007b44 0x00007b48 0x00007b4c 0x00007b50 
+		kern/debug/kdebug.c:0: print_stackframe+10
+	ebp:0x00007b48 eip:0x00100d1f args:0x00007b50 0x00007b54 0x00007b58 0x00007b5c 0x00007b60 
+		kern/debug/kmonitor.c:125: mon_backtrace+10
+	ebp:0x00007b68 eip:0x0010007f args:0x00007b70 0x00007b74 0x00007b78 0x00007b7c 0x00007b80 
+		kern/init/init.c:48: grade_backtrace2+19
+	ebp:0x00007b88 eip:0x001000a1 args:0x00007b90 0x00007b94 0x00007b98 0x00007b9c 0x00007ba0 
+		kern/init/init.c:53: grade_backtrace1+27
+	ebp:0x00007ba8 eip:0x001000be args:0x00007bb0 0x00007bb4 0x00007bb8 0x00007bbc 0x00007bc0 
+		kern/init/init.c:58: grade_backtrace0+19
+	ebp:0x00007bc8 eip:0x001000df args:0x00007bd0 0x00007bd4 0x00007bd8 0x00007bdc 0x00007be0 
+		kern/init/init.c:63: grade_backtrace+26
+	ebp:0x00007be8 eip:0x00100050 args:0x00007bf0 0x00007bf4 0x00007bf8 0x00007bfc 0x00007c00 
+		kern/init/init.c:28: kern_init+79
+	ebp:0x00007bf8 eip:0x00007d6e args:0x00007c00 0x00007c04 0x00007c08 0x00007c0c 0x00007c10 
+		<unknow>: -- 0x00007d6d --
+	基本一致。
+	ebp是栈顶指针，*ebp是调用者的ebp；*(ebp+4)是return address，即调用者调用处的后一条指令地址；
+	*(ebp+8)是第一个调用参数，*(ebp+b)是第二个参数，以此类推。
+##练习6：完善中断初始化和处理
+####中断描述符表（也可简称为保护模式下的中断向量表）中一个表项占多少字节？
+其中哪几位代表中断处理代码的入口？
+	
+
+	
+
+	
 

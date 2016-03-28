@@ -39,9 +39,9 @@ class scheduler:
         proc_id = self.new_process()
         tmp = program_description.split(':')
         if len(tmp) != 2:
-            print 'Bad description (%s): Must be number <x:y>'
-            print '  where X is the number of instructions'
-            print '  and Y is the percent change that an instruction is CPU not YIELD'
+            print ('Bad description (%s): Must be number <x:y>'%program_description)
+            print ('  where X is the number of instructions')
+            print ('  and Y is the percent change that an instruction is CPU not YIELD')
             exit(1)
 
         num_instructions, chance_cpu = int(tmp[0]), float(tmp[1])/100.0
@@ -56,21 +56,39 @@ class scheduler:
     #if pid==-1, then pid=self.curr_proc
     def move_to_ready(self, expected, pid=-1):
         #YOUR CODE
+        if(pid == -1):
+            if(self.proc_info[self.curr_proc][PROC_STATE] == expected):
+                self.proc_info[self.curr_proc][PROC_STATE] = STATE_READY
+        else:
+            if(self.proc_info[self.curr_proc][PROC_STATE] == expected):            
+                self.proc_info[pid][PROC_STATE] = STATE_READY
         return
 
     #change to RUNNING STATE, the current proc's state should be expected
     def move_to_running(self, expected):
         #YOUR CODE
+        if(self.proc_info[self.curr_proc][PROC_STATE] == expected):
+            self.proc_info[self.curr_proc][PROC_STATE] = STATE_RUNNING
         return
 
     #change to DONE STATE, the current proc's state should be expected
     def move_to_done(self, expected):
         #YOUR CODE
+        if(self.proc_info[self.curr_proc][PROC_STATE] == expected):
+            self.proc_info[self.curr_proc][PROC_STATE] = STATE_DONE
         return
 
     #choose next proc using FIFO/FCFS scheduling, If pid==-1, then pid=self.curr_proc
     def next_proc(self, pid=-1):
         #YOUR CODE
+        if(not self.proc_info[self.curr_proc][PROC_CODE]):
+            return
+        if(pid == -1):
+            instruction_to_execute = self.proc_info[self.curr_proc][PROC_CODE].pop(0)
+        else:
+            for pid in range(len(self.proc_info)):
+                
+            instruction_to_execute = self.proc_info[pid][PROC_CODE].pop(0)
         return
 
     def get_num_processes(self):
@@ -99,7 +117,7 @@ class scheduler:
 
     def space(self, num_columns):
         for i in range(num_columns):
-            print '%10s' % ' ',
+            print ('%10s' % ' ',)
 
     def check_if_done(self):
         if len(self.proc_info[self.curr_proc][PROC_CODE]) == 0:
@@ -119,11 +137,11 @@ class scheduler:
         self.move_to_running(STATE_READY)
 
         # OUTPUT: heade`[rs for each column
-        print '%s' % 'Time', 
+        print ('%s' % 'Time', end='') 
         for pid in range(len(self.proc_info)):
-            print '%10s' % ('PID:%2d' % (pid)),
+            print ('%10s' % ('PID:%2d' % (pid)), end='')
 
-        print ''
+        print ('')
 
         # init statistics
         cpu_busy = 0
@@ -136,21 +154,25 @@ class scheduler:
             instruction_to_execute = ''
             if self.proc_info[self.curr_proc][PROC_STATE] == STATE_RUNNING and \
                    len(self.proc_info[self.curr_proc][PROC_CODE]) > 0:
+                instruction_to_execute = self.proc_info[self.curr_proc][PROC_CODE].pop(0)
+                self.proc_info[self.curr_proc][PROC_STATE] = STATE_DONE
                 #YOUR CODE
 
             # OUTPUT: print what everyone is up to
-            print '%3d ' % clock_tick,
+            print ('%3d ' % clock_tick,end='')
             for pid in range(len(self.proc_info)):
                 if pid == self.curr_proc and instruction_to_execute != '':
-                    print '%10s' % ('RUN:'+instruction_to_execute),
+                    print ('%10s' % ('RUN:'+instruction_to_execute), end='')
                 else:
-                    print '%10s' % (self.proc_info[pid][PROC_STATE]),
+                    print ('%10s' % (self.proc_info[pid][PROC_STATE]), end='')
 
-            print ''
+            print ('')
 
             # if this is an YIELD instruction, switch to ready state
             # and add an io completion in the future
             if instruction_to_execute == DO_YIELD:
+                self.proc_info[self.curr_proc][PROC_STATE] == STATE_READY
+                
                 #YOUR CODE
 
             # ENDCASE: check if currently running thing is out of instructions
@@ -178,18 +200,18 @@ for p in options.process_list.split(','):
     s.load(p)
 
 
-print 'Produce a trace of what would happen when you run these processes:'
+print ('Produce a trace of what would happen when you run these processes:')
 for pid in range(s.get_num_processes()):
-    print 'Process %d' % pid
+    print ('Process %d' % pid)
     for inst in range(s.get_num_instructions(pid)):
-        print '  %s' % s.get_instruction(pid, inst)
-    print ''
-print 'Important behaviors:'
-print '  System will switch when the current process is FINISHED or ISSUES AN YIELD'
+        print ('  %s' % s.get_instruction(pid, inst))
+    print ('')
+print ('Important behaviors:')
+print ('  System will switch when the current process is FINISHED or ISSUES AN YIELD')
 
 (clock_tick) = s.run()
 
 if options.print_stats:
-    print ''
-    print 'Stats: Total Time %d' % clock_tick
-    print ''
+    print ('')
+    print ('Stats: Total Time %d' % clock_tick)
+    print ('')

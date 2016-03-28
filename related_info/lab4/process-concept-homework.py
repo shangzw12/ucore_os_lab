@@ -81,7 +81,6 @@ class scheduler:
     #choose next proc using FIFO/FCFS scheduling, If pid==-1, then pid=self.curr_proc
     def next_proc(self, pid=-1):
         #YOUR CODE
-        #print ("okkk")
         if(pid == -1):
             if(len(self.proc_info)>1):
                 pid = self.curr_proc

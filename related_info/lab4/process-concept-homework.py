@@ -81,10 +81,15 @@ class scheduler:
     #choose next proc using FIFO/FCFS scheduling, If pid==-1, then pid=self.curr_proc
     def next_proc(self, pid=-1):
         #YOUR CODE
+        if(len(self.proc_info)< 2):
+            self.curr_proc = 0
+            #self.proc_info[self.curr_proc][PROC_STATE] = STATE_RUNNING
+            return
         if(pid == -1):
             if(len(self.proc_info)>1):
                 pid = self.curr_proc
             else:
+                self.proc_info[self.curr_proc][PROC_STATE] = STATE_RUNNING
                 return
         for _pid in range(pid+1, len(self.proc_info)):
             if self.proc_info[_pid][PROC_STATE] == STATE_READY: 
@@ -154,8 +159,7 @@ class scheduler:
         # init statistics
         cpu_busy = 0
 
-        while self.get_num_active() > 0:
-        #for i in range(15):
+        while self.get_num_active() > 0 :
             clock_tick += 1
             
             # if current proc is RUNNING and has an instruction, execute it
@@ -178,8 +182,9 @@ class scheduler:
             # if this is an YIELD instruction, switch to ready state
             # and add an io completion in the future
             if instruction_to_execute == DO_YIELD:
-                self.proc_info[self.curr_proc][PROC_STATE] = STATE_READY
-                self.next_proc(self.curr_proc);
+                if(len(self.proc_info)>1):
+                    self.proc_info[self.curr_proc][PROC_STATE] = STATE_READY
+                    self.next_proc(self.curr_proc);
                 #YOUR CODE
 
             # ENDCASE: check if currently running thing is out of instructions

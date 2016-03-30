@@ -15,7 +15,7 @@
 	    list_entry_t list_link;                     // Process link list 
 	    list_entry_t hash_link;                     // Process hash list
 	};
-####主要字段如上面代码显示
+	主要字段如上面代码显示
 	包括进程的状态/进程ID/进程运行时间等
 
 ####有下面函数对其进行了修改

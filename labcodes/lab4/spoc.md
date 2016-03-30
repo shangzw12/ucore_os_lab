@@ -1,4 +1,4 @@
-#进程控制块的数据结构
+####进程控制块的数据结构
 	struct proc_struct {
 	    enum proc_state state;                      // Process state
 	    int pid;                                    // Process ID
@@ -39,3 +39,6 @@
 	copy_mm() //拷贝和当前进程内存几乎一样的内存
 	copy_thread()//同上
 	do_fork()//fork一个新的进程
+
+####为什么要修改和使用它
+	在每个函数后面的函数的作用可以看出

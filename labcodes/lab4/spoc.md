@@ -28,6 +28,8 @@
 	static int setup_kstack(struct proc_struct *proc) //为进程设置堆栈
 	// put_kstack - free the memory space of process kernel stack
 	static void put_kstack(struct proc_struct *proc) //释放进程的堆栈
+	proc_init()//对idle_proc进行初始化
+	
 ####有下面函数用到了他
 	上面所有的要修改他的函数
 	get_proc_name()//获取进程的name

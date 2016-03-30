@@ -38,4 +38,4 @@
 	find_proc()//获取制定pid的进程
 	copy_mm() //拷贝和当前进程内存几乎一样的内存
 	copy_thread()//同上
-	do_fork()//
+	do_fork()//fork一个新的进程

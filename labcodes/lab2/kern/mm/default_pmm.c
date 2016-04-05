@@ -100,7 +100,7 @@ default_alloc_pages(size_t n) {
                 le = list_next(le);
             }
             if(p->property > n){
-                (le2page(le, page_link))->property = property - n;
+                (le2page(le, page_link))->property = p->property - n;
             }
             /*
             ClearPageProperty(p);

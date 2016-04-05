@@ -1,0 +1,7 @@
+##lab1
+	在makefile中添加了对于lab1实验的支持，lab1-mon
+	在tools文件夹中添加了lab1init文件
+	在debug.c中添加了对于某函数的支持
+	以上
+##lab2	 
+

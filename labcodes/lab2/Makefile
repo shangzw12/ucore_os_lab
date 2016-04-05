@@ -231,6 +231,12 @@ TARGETS: $(TARGETS)
 QEMUOPTS = -hda $(UCOREIMG)
 
 .PHONY: qemu qemu-nox debug debug-nox
+# lab1 add
+lab1-mon: $(UCOREIMG)
+	$(V)$(TERMINAL) -e "$(QEMU) -S -s -d in_asm -D $(BINDIR)/q.log -monitor stdio -hda $< -serial null"
+	$(V)sleep 2
+	$(V)$(TERMINAL) -e "gdb -q -x tools/lab1init"
+#lab1-add end
 qemu-mon: $(UCOREIMG)
 	$(V)$(QEMU)  -no-reboot -monitor stdio $(QEMUOPTS) -serial null
 qemu: $(UCOREIMG)

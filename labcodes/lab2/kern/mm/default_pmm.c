@@ -72,7 +72,7 @@ default_init_memmap(struct Page *base, size_t n) {
     for (; p != base + n; p ++) {
         assert(PageReserved(p));
         p->flags = p->property = 0;
-        setPageProperty(p);
+        SetPageProperty(p);
         set_page_ref(p, 0);
         list_add_before(&free_list, &(p->page_link));
     }

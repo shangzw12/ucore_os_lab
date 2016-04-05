@@ -146,7 +146,7 @@ default_free_pages(struct Page *base, size_t n) {
     le = list_prev(&(base->page_link));
     p = le2page(le, page_link);
     if(le!=&free_list && p == base-1){
-        while(le!=$free_list){
+        while(le!=&free_list){
             if(p->property){
                 p->property += base->property;
                 base->property = 0;

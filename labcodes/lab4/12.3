@@ -17,3 +17,23 @@
 	};
 ####主要字段如上面代码显示
 	包括进程的状态/进程ID/进程运行时间等
+
+####有下面函数对其进行了修改
+
+	alloc_proc(void)//用于进程控制块的初始化，用于唯一标示进程
+	char *	set_proc_name(struct proc_struct *proc, const char *name)  //设置进程名
+	get_pid()// 给进程设置唯一的pid
+	proc_run() //用于执行结构体中对应的进程
+	// setup_kstack - alloc pages with size KSTACKPAGE as process kernel stack
+	static int setup_kstack(struct proc_struct *proc) //为进程设置堆栈
+	// put_kstack - free the memory space of process kernel stack
+	static void put_kstack(struct proc_struct *proc) //释放进程的堆栈
+####有下面函数用到了他
+	上面所有的要修改他的函数
+	get_proc_name()//获取进程的name
+	proc_run() //执行结构体对应的进程
+	hash_proc()//为了search 进程的高效，先对进程的pid进行hash
+	find_proc()//获取制定pid的进程
+	copy_mm() //拷贝和当前进程内存几乎一样的内存
+	copy_thread()//同上
+	do_fork()//

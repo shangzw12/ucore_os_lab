@@ -102,10 +102,10 @@ default_alloc_pages(size_t n) {
             if(p->property > n){
                 (le2page(le, page_link))->property = p->property - n;
             }
-            /*
+            
             ClearPageProperty(p);
             SetPageReserved(p);
-            */
+           
             //上面多此一举
             nr_free -=n;
             return p;

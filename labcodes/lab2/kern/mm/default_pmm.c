@@ -64,6 +64,7 @@ default_init(void) {
     list_init(&free_list);
     nr_free = 0;
 }
+
 static void
 default_init_memmap(struct Page *base, size_t n) {
     assert(n > 0);
@@ -116,6 +117,7 @@ default_alloc_pages(size_t n) {
     return NULL;
     
 }
+
 static void
 default_free_pages(struct Page *base, size_t n) {
     assert(n > 0);

@@ -139,9 +139,10 @@ default_free_pages(struct Page *base, size_t n) {
     base->property = n;
     //下面是块的合并
     //向后
+    p = le2page(le, page_link);
     if(base+n == p){
-        base->property += (le2page(le, page_link))->property;
-        (le2page(le, page_link))->property = 0;
+        base->property += p->property;
+        p->property = 0;
     }
     //向前
     le = list_prev(&(base->page_link));

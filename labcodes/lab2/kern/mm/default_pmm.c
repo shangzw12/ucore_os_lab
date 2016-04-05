@@ -135,7 +135,7 @@ default_free_pages(struct Page *base, size_t n) {
     base->flags = 0;
     set_page_ref(base, 0);
     ClearPageProperty(base);
-    SetPageReserved(base);
+    SetPageProperty(base);
     base->property = n;
     //下面是块的合并
     //向后

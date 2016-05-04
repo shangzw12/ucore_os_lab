@@ -1,3 +1,4 @@
+#include <x86.h>
 #include <list.h>
 #include <sync.h>
 #include <proc.h>
@@ -5,6 +6,10 @@
 #include <stdio.h>
 #include <assert.h>
 #include <default_sched.h>
+#include <kdebug.h>
+#include <defs.h>
+
+
 
 // the list of timer
 static list_entry_t timer_list;
@@ -18,6 +23,12 @@ sched_class_enqueue(struct proc_struct *proc) {
     if (proc != idleproc) {
         sched_class->enqueue(rq, proc);
     }
+}
+static __noinline uint32_t
+read_eip(void) {
+    uint32_t eip;
+    asm volatile("movl 4(%%ebp), %0" : "=r" (eip));
+    return eip;
 }
 
 static inline void
@@ -86,6 +97,7 @@ schedule(void) {
             sched_class_enqueue(current);
         }
         if ((next = sched_class_pick_next()) != NULL) {
+        	//print_stackframe();
             sched_class_dequeue(next);
         }
         if (next == NULL) {

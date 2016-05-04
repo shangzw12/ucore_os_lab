@@ -55,6 +55,7 @@ static int
 sys_putc(uint32_t arg[]) {
     int c = (int)arg[0];
     cputchar(c);
+    panic("my_code",0);
     return 0;
 }
 

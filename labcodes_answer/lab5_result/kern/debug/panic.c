@@ -2,7 +2,6 @@
 #include <stdio.h>
 #include <intr.h>
 #include <kmonitor.h>
-#include <kdebug.h>
 
 static bool is_panic = 0;
 
@@ -18,7 +17,6 @@ __panic(const char *file, int line, const char *fmt, ...) {
     is_panic = 1;
 
     // print the 'message'
-    cprintf("This is the message: \n");
     va_list ap;
     va_start(ap, fmt);
     cprintf("kernel panic at %s:%d:\n    ", file, line);
@@ -27,7 +25,6 @@ __panic(const char *file, int line, const char *fmt, ...) {
     va_end(ap);
 
 panic_dead:
-	print_stackframe();
     intr_disable();
     while (1) {
         kmonitor(NULL);

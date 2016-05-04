@@ -213,7 +213,6 @@ trap_dispatch(struct trapframe *tf) {
         }
         break;
     case T_SYSCALL:
-    	//panic("my_code",ret);
         syscall();
         break;
     case IRQ_OFFSET + IRQ_TIMER:
